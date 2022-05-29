@@ -15,18 +15,18 @@ class CalculatorViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        let textField = UITextField()
-        textField.textColor = .white
-        textField.font = .systemFont(ofSize: 92, weight: .light)
-        textField.text = "123"
-        textField.textAlignment = .right
-        view.addSubview(textField)
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 92, weight: .light)
+        label.text = "123"
+        label.textAlignment = .right
+        view.addSubview(label)
         
         let margins = view.layoutMarginsGuide
         
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
-        textField.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
         
         let zero = CalculatorButton(name: "0", case: .operand)
         let one = CalculatorButton(name: "1", case: .operand)
@@ -48,27 +48,22 @@ class CalculatorViewController: UIViewController {
         let change = CalculatorButton(systemName: "plus.forwardslash.minus", case: .etc)
         let percent = CalculatorButton(systemName: "percent", case: .etc)
         
-        let test = CalculatorButton(systemName: "equal", case: .operand)
-        
         let firstStack = UIStackView(arrangedSubviews: [ac, change, percent, divider])
         let secondStack = UIStackView(arrangedSubviews: [seven, eight, nine, multiplier])
         let thirdStack = UIStackView(arrangedSubviews: [four, five, six, minus])
         let fourthStack = UIStackView(arrangedSubviews: [one, two, three, plus])
-        let fifthStack = UIStackView(arrangedSubviews: [zero, test, dot, equal])
+        let fifthInnetStack = UIStackView(arrangedSubviews: [dot, equal])
+        fifthInnetStack.spacing = 16
+        let fifthStack = UIStackView(arrangedSubviews: [zero, fifthInnetStack])
         
-        view.addSubview(firstStack)
-        view.addSubview(secondStack)
-        view.addSubview(thirdStack)
-        view.addSubview(fourthStack)
-        view.addSubview(fifthStack)
+        let stacks = [firstStack, secondStack, thirdStack, fourthStack, fifthStack]
         
-        setStack(to: firstStack)
-        setStack(to: secondStack)
-        setStack(to: thirdStack)
-        setStack(to: fourthStack)
-        setStack(to: fifthStack)
+        for stack in stacks {
+            view.addSubview(stack)
+            setStack(to: stack)
+        }
         
-        firstStack.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10).isActive = true
+        firstStack.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
         secondStack.topAnchor.constraint(equalTo: firstStack.bottomAnchor, constant: 16).isActive = true
         thirdStack.topAnchor.constraint(equalTo: secondStack.bottomAnchor, constant: 16).isActive = true
         fourthStack.topAnchor.constraint(equalTo: thirdStack.bottomAnchor, constant: 16).isActive = true
@@ -82,6 +77,7 @@ class CalculatorViewController: UIViewController {
             stack.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
             stack.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
         }
+        
         
     }
     

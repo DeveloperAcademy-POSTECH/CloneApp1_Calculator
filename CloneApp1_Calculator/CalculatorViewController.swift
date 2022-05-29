@@ -25,9 +25,40 @@ class CalculatorViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
         textField.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-        textField.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
         
-        // 버튼 (수학기호(가로모드), 숫자+., C/AC +/- &, 기본연산자) 4개 변종 - 기본 버튼 만들고 델리게이트로 해보자
+        // 5줄의 HStack
+        let seven = CalculatorButton(name: "7", case: .operand)
+        seven.translatesAutoresizingMaskIntoConstraints = false
+        seven.widthAnchor.constraint(equalTo: seven.heightAnchor, multiplier: 1).isActive = true
+        
+        let eight = CalculatorButton(name: "8", case: .operand)
+        eight.translatesAutoresizingMaskIntoConstraints = false
+        eight.widthAnchor.constraint(equalTo: eight.heightAnchor, multiplier: 1).isActive = true
+        
+        let nine = CalculatorButton(name: "9", case: .operand)
+        nine.translatesAutoresizingMaskIntoConstraints = false
+        nine.widthAnchor.constraint(equalTo: nine.heightAnchor, multiplier: 1).isActive = true
+        
+        let multiplier = CalculatorButton(name: "X", case: .basicOperator)
+        multiplier.translatesAutoresizingMaskIntoConstraints = false
+        multiplier.widthAnchor.constraint(equalTo: multiplier.heightAnchor, multiplier: 1).isActive = true
+        
+        let firstStack = UIStackView(arrangedSubviews: [
+            seven,
+            eight,
+            nine,
+            multiplier
+        ])
+        
+        view.addSubview(firstStack)
+        
+        firstStack.spacing = 16
+        firstStack.axis = .horizontal
+        firstStack.translatesAutoresizingMaskIntoConstraints = false
+        firstStack.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
+        firstStack.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        firstStack.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        firstStack.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
     }
     
 

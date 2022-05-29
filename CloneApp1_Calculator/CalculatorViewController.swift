@@ -10,55 +10,79 @@ import UIKit
 class CalculatorViewController: UIViewController {
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
         view.backgroundColor = .systemBackground
         
-        // 텍스트 필드
         let textField = UITextField()
         textField.textColor = .white
-        textField.font = .systemFont(ofSize: 72, weight: .light)
+        textField.font = .systemFont(ofSize: 92, weight: .light)
         textField.text = "123"
         textField.textAlignment = .right
         view.addSubview(textField)
         
         let margins = view.layoutMarginsGuide
+        
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
         textField.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
         
-        // 5줄의 HStack
+        let zero = CalculatorButton(name: "0", case: .operand)
+        let one = CalculatorButton(name: "1", case: .operand)
+        let two = CalculatorButton(name: "2", case: .operand)
+        let three = CalculatorButton(name: "3", case: .operand)
+        let four = CalculatorButton(name: "4", case: .operand)
+        let five = CalculatorButton(name: "5", case: .operand)
+        let six = CalculatorButton(name: "6", case: .operand)
         let seven = CalculatorButton(name: "7", case: .operand)
-        seven.translatesAutoresizingMaskIntoConstraints = false
-        seven.widthAnchor.constraint(equalTo: seven.heightAnchor, multiplier: 1).isActive = true
-        
         let eight = CalculatorButton(name: "8", case: .operand)
-        eight.translatesAutoresizingMaskIntoConstraints = false
-        eight.widthAnchor.constraint(equalTo: eight.heightAnchor, multiplier: 1).isActive = true
-        
         let nine = CalculatorButton(name: "9", case: .operand)
-        nine.translatesAutoresizingMaskIntoConstraints = false
-        nine.widthAnchor.constraint(equalTo: nine.heightAnchor, multiplier: 1).isActive = true
-        
+        let dot = CalculatorButton(name: ".", case: .operand)
         let multiplier = CalculatorButton(systemName: "xmark", case: .basicOperator)
-        multiplier.translatesAutoresizingMaskIntoConstraints = false
-        multiplier.widthAnchor.constraint(equalTo: multiplier.heightAnchor, multiplier: 1).isActive = true
+        let minus = CalculatorButton(systemName: "minus", case: .basicOperator)
+        let plus = CalculatorButton(systemName: "plus", case: .basicOperator)
+        let divider = CalculatorButton(systemName: "divide", case: .basicOperator)
+        let equal = CalculatorButton(systemName: "equal", case: .basicOperator)
+        let ac = CalculatorButton(name: "AC", case: .etc)
+        let change = CalculatorButton(systemName: "plus.forwardslash.minus", case: .etc)
+        let percent = CalculatorButton(systemName: "percent", case: .etc)
         
-        let firstStack = UIStackView(arrangedSubviews: [
-            seven,
-            eight,
-            nine,
-            multiplier
-        ])
+        let test = CalculatorButton(systemName: "equal", case: .operand)
+        
+        let firstStack = UIStackView(arrangedSubviews: [ac, change, percent, divider])
+        let secondStack = UIStackView(arrangedSubviews: [seven, eight, nine, multiplier])
+        let thirdStack = UIStackView(arrangedSubviews: [four, five, six, minus])
+        let fourthStack = UIStackView(arrangedSubviews: [one, two, three, plus])
+        let fifthStack = UIStackView(arrangedSubviews: [zero, test, dot, equal])
         
         view.addSubview(firstStack)
+        view.addSubview(secondStack)
+        view.addSubview(thirdStack)
+        view.addSubview(fourthStack)
+        view.addSubview(fifthStack)
         
-        firstStack.spacing = 16
-        firstStack.axis = .horizontal
-        firstStack.translatesAutoresizingMaskIntoConstraints = false
-        firstStack.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
-        firstStack.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-        firstStack.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
-        firstStack.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
+        setStack(to: firstStack)
+        setStack(to: secondStack)
+        setStack(to: thirdStack)
+        setStack(to: fourthStack)
+        setStack(to: fifthStack)
+        
+        firstStack.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10).isActive = true
+        secondStack.topAnchor.constraint(equalTo: firstStack.bottomAnchor, constant: 16).isActive = true
+        thirdStack.topAnchor.constraint(equalTo: secondStack.bottomAnchor, constant: 16).isActive = true
+        fourthStack.topAnchor.constraint(equalTo: thirdStack.bottomAnchor, constant: 16).isActive = true
+        fifthStack.topAnchor.constraint(equalTo: fourthStack.bottomAnchor, constant: 16).isActive = true
+        fifthStack.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -40).isActive = true
+        
+        func setStack(to stack: UIStackView) {
+            stack.spacing = 16
+            stack.axis = .horizontal
+            stack.translatesAutoresizingMaskIntoConstraints = false
+            stack.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+            stack.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        }
+        
     }
     
 

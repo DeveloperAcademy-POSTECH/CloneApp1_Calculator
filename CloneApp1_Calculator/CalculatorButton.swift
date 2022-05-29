@@ -44,17 +44,19 @@ class CalculatorButton: UIButton {
         switch calculatorCase {
         case .operand:
             config.baseBackgroundColor = .darkGray
-            self.titleLabel?.textColor = .white
+            self.setTitleColor(.white, for: .normal)
         case .basicOperator:
             config.baseBackgroundColor = .systemOrange
-            self.titleLabel?.textColor = .white
+            self.setTitleColor(.white, for: .normal)
         case .etc:
             config.baseBackgroundColor = .lightGray
-            self.titleLabel?.textColor = .black
+            self.setTitleColor(.black, for: .normal)
         case .scientific:
             config.baseBackgroundColor = .darkGray
-            self.titleLabel?.textColor = .white
+            self.setTitleColor(.white, for: .normal)
         }
         button.configuration = config
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 1).isActive = true
     }
 }

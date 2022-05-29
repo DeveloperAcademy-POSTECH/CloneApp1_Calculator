@@ -39,7 +39,7 @@ class CalculatorViewController: UIViewController {
         nine.translatesAutoresizingMaskIntoConstraints = false
         nine.widthAnchor.constraint(equalTo: nine.heightAnchor, multiplier: 1).isActive = true
         
-        let multiplier = CalculatorButton(name: "X", case: .basicOperator)
+        let multiplier = CalculatorButton(systemName: "xmark", case: .basicOperator)
         multiplier.translatesAutoresizingMaskIntoConstraints = false
         multiplier.widthAnchor.constraint(equalTo: multiplier.heightAnchor, multiplier: 1).isActive = true
         

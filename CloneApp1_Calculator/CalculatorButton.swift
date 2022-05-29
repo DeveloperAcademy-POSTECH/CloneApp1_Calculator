@@ -27,7 +27,18 @@ class CalculatorButton: UIButton {
     init(name: String, case calculatorCase: CalculatorCase) {
         super.init(frame: .zero)
         self.setTitle(name, for: .normal)
-        self.titleLabel?.font = .preferredFont(forTextStyle: .largeTitle, compatibleWith: nil)
+        self.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        self.setButton(button: self, case: calculatorCase)
+    }
+    
+    init(systemName: String, case calculatorCase: CalculatorCase) {
+        super.init(frame: .zero)
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
+        self.setImage(UIImage(systemName: systemName, withConfiguration: config), for: .normal)
+        self.setButton(button: self, case: calculatorCase)
+    }
+    
+    private func setButton(button: UIButton, case calculatorCase: CalculatorCase) {
         var config = UIButton.Configuration.filled()
         config.cornerStyle = .capsule
         switch calculatorCase {
@@ -44,6 +55,6 @@ class CalculatorButton: UIButton {
             config.baseBackgroundColor = .darkGray
             self.titleLabel?.textColor = .white
         }
-        self.configuration = config
+        button.configuration = config
     }
 }

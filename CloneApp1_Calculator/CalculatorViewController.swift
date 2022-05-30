@@ -109,7 +109,12 @@ extension CalculatorViewController {
         let buttons = [zero, one, two, three, four, five, six, seven, eight, nine, dot, multiplier, minus, plus, divider, equal, ac]
         for button in buttons {
             if let button = button {
+                self.view.addSubview(button)
                 button.titleLabel?.font = .systemFont(ofSize: 36, weight: .regular)
+                
+                let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 36)]
+                let attributedTitle = NSAttributedString(string: button.titleLabel?.text ?? "", attributes: attribute)
+                button.setAttributedTitle(attributedTitle, for: .normal)
                 button.addTarget(self, action: #selector(tapButton(_:)), for: .touchUpInside)
             }
         }

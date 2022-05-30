@@ -106,8 +106,8 @@ extension CalculatorViewController {
         change = CalculatorButton(systemName: "plus.forwardslash.minus", type: .etc)
         percent = CalculatorButton(systemName: "percent", type: .etc)
         
-        let operands = [zero, one, two, three, four, five, six, seven, eight, nine, dot]
-        for button in operands {
+        let buttons = [zero, one, two, three, four, five, six, seven, eight, nine, dot, multiplier, minus, plus, divider, equal, ac]
+        for button in buttons {
             if let button = button {
                 button.titleLabel?.font = .systemFont(ofSize: 36, weight: .regular)
                 button.addTarget(self, action: #selector(tapButton(_:)), for: .touchUpInside)
@@ -132,8 +132,10 @@ extension CalculatorViewController {
             tapNumberButton(left, right)
         case .basicOperator(let type):
             tapOperatorButton(right, type: type)
+        case .etc:
+            tapACButton()
         default:
-            print("미 구현")
+            tapACButton()
         }
     }
     
@@ -158,5 +160,9 @@ extension CalculatorViewController {
         case .equal:
             print("미 구현")
         }
+    }
+    
+    private func tapACButton() {
+        self.label.text = "0"
     }
 }

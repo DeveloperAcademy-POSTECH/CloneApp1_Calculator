@@ -9,27 +9,29 @@ import UIKit
 
 class CalculatorViewController: UIViewController {
     
-    let label = UILabel()
+    var leftOperand = ""
     
-    let zero = CalculatorButton(name: "0", type: .operand)
-    let one = CalculatorButton(name: "1", type: .operand)
-    let two = CalculatorButton(name: "2", type: .operand)
-    let three = CalculatorButton(name: "3", type: .operand)
-    let four = CalculatorButton(name: "4", type: .operand)
-    let five = CalculatorButton(name: "5", type: .operand)
-    let six = CalculatorButton(name: "6", type: .operand)
-    let seven = CalculatorButton(name: "7", type: .operand)
-    let eight = CalculatorButton(name: "8", type: .operand)
-    let nine = CalculatorButton(name: "9", type: .operand)
-    let dot = CalculatorButton(name: ".", type: .operand)
-    let multiplier = CalculatorButton(systemName: "xmark", type: .basicOperator)
-    let minus = CalculatorButton(systemName: "minus", type: .basicOperator)
-    let plus = CalculatorButton(systemName: "plus", type: .basicOperator)
-    let divider = CalculatorButton(systemName: "divide", type: .basicOperator)
-    let equal = CalculatorButton(systemName: "equal", type: .basicOperator)
-    let ac = CalculatorButton(name: "AC", type: .etc)
-    let change = CalculatorButton(systemName: "plus.forwardslash.minus", type: .etc)
-    let percent = CalculatorButton(systemName: "percent", type: .etc)
+    var label: UILabel!
+    
+    var zero: CalculatorButton!
+    var one: CalculatorButton!
+    var two: CalculatorButton!
+    var three: CalculatorButton!
+    var four: CalculatorButton!
+    var five: CalculatorButton!
+    var six: CalculatorButton!
+    var seven: CalculatorButton!
+    var eight: CalculatorButton!
+    var nine: CalculatorButton!
+    var dot: CalculatorButton!
+    var multiplier: CalculatorButton!
+    var minus: CalculatorButton!
+    var plus: CalculatorButton!
+    var divider: CalculatorButton!
+    var equal: CalculatorButton!
+    var ac: CalculatorButton!
+    var change: CalculatorButton!
+    var percent: CalculatorButton!
     
     override func viewDidLoad() {
         
@@ -37,6 +39,7 @@ class CalculatorViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
+        setupButtons()
         setupLabel()
         
         let margins = view.layoutMarginsGuide
@@ -54,8 +57,6 @@ class CalculatorViewController: UIViewController {
             setStackView(to: stackView)
         }
         
-        setupButtons()
-        
         firstStackView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
         secondStackView.topAnchor.constraint(equalTo: firstStackView.bottomAnchor, constant: 16).isActive = true
         thirdStackView.topAnchor.constraint(equalTo: secondStackView.bottomAnchor, constant: 16).isActive = true
@@ -68,11 +69,12 @@ class CalculatorViewController: UIViewController {
 extension CalculatorViewController {
     
     private func setupLabel() {
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 92, weight: .light)
-        label.text = "123"
-        label.textAlignment = .right
-        view.addSubview(label)
+        self.label = UILabel()
+        self.label.textColor = .white
+        self.label.font = .systemFont(ofSize: 92, weight: .light)
+        self.label.text = "0"
+        self.label.textAlignment = .right
+        view.addSubview(self.label)
         
         let margins = view.layoutMarginsGuide
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -81,15 +83,40 @@ extension CalculatorViewController {
     }
     
     private func setupButtons() {
-        let buttons = [zero, one, two, three, four, five, six, seven, eight, nine, dot, multiplier, minus, plus, divider, equal, ac, change, percent]
-        for button in buttons {
-            button.titleLabel?.font = .systemFont(ofSize: 36, weight: .regular)
+        
+        zero = CalculatorButton(name: "0", type: .number)
+        one = CalculatorButton(name: "1", type: .number)
+        two = CalculatorButton(name: "2", type: .number)
+        three = CalculatorButton(name: "3", type: .number)
+        four = CalculatorButton(name: "4", type: .number)
+        five = CalculatorButton(name: "5", type: .number)
+        six = CalculatorButton(name: "6", type: .number)
+        seven = CalculatorButton(name: "7", type: .number)
+        eight = CalculatorButton(name: "8", type: .number)
+        nine = CalculatorButton(name: "9", type: .number)
+        dot = CalculatorButton(name: ".", type: .number)
+        
+        multiplier = CalculatorButton(systemName: "xmark", type: .basicOperator(type: .multiply))
+        minus = CalculatorButton(systemName: "minus", type: .basicOperator(type: .minus))
+        plus = CalculatorButton(systemName: "plus", type: .basicOperator(type: .plus))
+        divider = CalculatorButton(systemName: "divide", type: .basicOperator(type: .divide))
+        equal = CalculatorButton(systemName: "equal", type: .basicOperator(type: .equal))
+        
+        ac = CalculatorButton(name: "AC", type: .etc)
+        change = CalculatorButton(systemName: "plus.forwardslash.minus", type: .etc)
+        percent = CalculatorButton(systemName: "percent", type: .etc)
+        
+        let operands = [zero, one, two, three, four, five, six, seven, eight, nine, dot]
+        for button in operands {
+            if let button = button {
+                button.titleLabel?.font = .systemFont(ofSize: 36, weight: .regular)
+                button.addTarget(self, action: #selector(tapButton(_:)), for: .touchUpInside)
+            }
         }
     }
     
     private func setStackView(to stackView: UIStackView) {
         let margins = view.layoutMarginsGuide
-        
         stackView.spacing = 16
         stackView.axis = .horizontal
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -97,25 +124,39 @@ extension CalculatorViewController {
         stackView.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
     }
     
-//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-//        super.traitCollectionDidChange(previousTraitCollection)
-//
-//        guard previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass else { return }
-//        switch traitCollection.horizontalSizeClass {
-//        case .compact:
-//            setupConstraintForCompactEnvironment()
-//        case .regular:
-//            setupConstraintForRegularEnvironment()
-//        case .unspecified:
-//            break
-//        }
-//    }
-//
-//    private func setupConstraintForCompactEnvironment() {
-//
-//    }
-//
-//    private func setupConstraintForRegularEnvironment() {
-//
-//    }
+    @objc func tapButton(_ sender: UIButton) {
+        guard let calculatorButton = sender as? CalculatorButton else { return }
+        guard let right = sender.title(for: .normal), let left = self.label.text else {return}
+        switch calculatorButton.calculatorType {
+        case .number:
+            tapNumberButton(left, right)
+        case .basicOperator(let type):
+            tapOperatorButton(right, type: type)
+        default:
+            print("미 구현")
+        }
+    }
+    
+    private func tapNumberButton(_ left: String , _ right: String) {
+        if left == "0" {
+            self.label.text = right
+        } else {
+            self.label.text = left + right
+        }
+    }
+    
+    private func tapOperatorButton(_ value: String, type: OperatorType) {
+        switch type {
+        case .plus:
+            print("미 구현")
+        case .minus:
+            print("미 구현")
+        case .divide:
+            print("미 구현")
+        case .multiply:
+            print("미 구현")
+        case .equal:
+            print("미 구현")
+        }
+    }
 }

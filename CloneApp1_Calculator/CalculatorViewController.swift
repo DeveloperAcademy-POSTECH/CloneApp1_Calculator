@@ -10,8 +10,75 @@ import UIKit
 class CalculatorViewController: UIViewController {
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        view.backgroundColor = .systemBackground
+        
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 92, weight: .light)
+        label.text = "123"
+        label.textAlignment = .right
+        view.addSubview(label)
+        
+        let margins = view.layoutMarginsGuide
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        
+        let zero = CalculatorButton(name: "0", case: .operand)
+        let one = CalculatorButton(name: "1", case: .operand)
+        let two = CalculatorButton(name: "2", case: .operand)
+        let three = CalculatorButton(name: "3", case: .operand)
+        let four = CalculatorButton(name: "4", case: .operand)
+        let five = CalculatorButton(name: "5", case: .operand)
+        let six = CalculatorButton(name: "6", case: .operand)
+        let seven = CalculatorButton(name: "7", case: .operand)
+        let eight = CalculatorButton(name: "8", case: .operand)
+        let nine = CalculatorButton(name: "9", case: .operand)
+        let dot = CalculatorButton(name: ".", case: .operand)
+        let multiplier = CalculatorButton(systemName: "xmark", case: .basicOperator)
+        let minus = CalculatorButton(systemName: "minus", case: .basicOperator)
+        let plus = CalculatorButton(systemName: "plus", case: .basicOperator)
+        let divider = CalculatorButton(systemName: "divide", case: .basicOperator)
+        let equal = CalculatorButton(systemName: "equal", case: .basicOperator)
+        let ac = CalculatorButton(name: "AC", case: .etc)
+        let change = CalculatorButton(systemName: "plus.forwardslash.minus", case: .etc)
+        let percent = CalculatorButton(systemName: "percent", case: .etc)
+        
+        let firstStack = UIStackView(arrangedSubviews: [ac, change, percent, divider])
+        let secondStack = UIStackView(arrangedSubviews: [seven, eight, nine, multiplier])
+        let thirdStack = UIStackView(arrangedSubviews: [four, five, six, minus])
+        let fourthStack = UIStackView(arrangedSubviews: [one, two, three, plus])
+        let fifthInnetStack = UIStackView(arrangedSubviews: [dot, equal])
+        fifthInnetStack.spacing = 16
+        let fifthStack = UIStackView(arrangedSubviews: [zero, fifthInnetStack])
+        
+        let stacks = [firstStack, secondStack, thirdStack, fourthStack, fifthStack]
+        
+        for stack in stacks {
+            view.addSubview(stack)
+            setStack(to: stack)
+        }
+        
+        firstStack.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
+        secondStack.topAnchor.constraint(equalTo: firstStack.bottomAnchor, constant: 16).isActive = true
+        thirdStack.topAnchor.constraint(equalTo: secondStack.bottomAnchor, constant: 16).isActive = true
+        fourthStack.topAnchor.constraint(equalTo: thirdStack.bottomAnchor, constant: 16).isActive = true
+        fifthStack.topAnchor.constraint(equalTo: fourthStack.bottomAnchor, constant: 16).isActive = true
+        fifthStack.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -40).isActive = true
+        
+        func setStack(to stack: UIStackView) {
+            stack.spacing = 16
+            stack.axis = .horizontal
+            stack.translatesAutoresizingMaskIntoConstraints = false
+            stack.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+            stack.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        }
+        
+        
     }
     
 

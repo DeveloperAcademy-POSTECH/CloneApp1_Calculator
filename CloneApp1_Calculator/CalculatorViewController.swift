@@ -8,88 +8,166 @@
 import UIKit
 
 class CalculatorViewController: UIViewController {
-
+    
+    var leftOperand = ""
+    
+    var label: UILabel!
+    
+    var zero: CalculatorButton!
+    var one: CalculatorButton!
+    var two: CalculatorButton!
+    var three: CalculatorButton!
+    var four: CalculatorButton!
+    var five: CalculatorButton!
+    var six: CalculatorButton!
+    var seven: CalculatorButton!
+    var eight: CalculatorButton!
+    var nine: CalculatorButton!
+    var dot: CalculatorButton!
+    var multiplier: CalculatorButton!
+    var minus: CalculatorButton!
+    var plus: CalculatorButton!
+    var divider: CalculatorButton!
+    var equal: CalculatorButton!
+    var ac: CalculatorButton!
+    var change: CalculatorButton!
+    var percent: CalculatorButton!
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
         
-        let label = UILabel()
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 92, weight: .light)
-        label.text = "123"
-        label.textAlignment = .right
-        view.addSubview(label)
+        setupButtons()
+        setupLabel()
         
         let margins = view.layoutMarginsGuide
+        let firstStackView = UIStackView(arrangedSubviews: [ac, change, percent, divider])
+        let secondStackView = UIStackView(arrangedSubviews: [seven, eight, nine, multiplier])
+        let thirdStackView = UIStackView(arrangedSubviews: [four, five, six, minus])
+        let fourthStackView = UIStackView(arrangedSubviews: [one, two, three, plus])
+        let fifthInnetStackView = UIStackView(arrangedSubviews: [dot, equal])
+        fifthInnetStackView.spacing = 16
+        let fifthStackView = UIStackView(arrangedSubviews: [zero, fifthInnetStackView])
+        let stackViews = [firstStackView, secondStackView, thirdStackView, fourthStackView, fifthStackView]
         
+        for stackView in stackViews {
+            view.addSubview(stackView)
+            setStackView(to: stackView)
+        }
+        
+        firstStackView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
+        secondStackView.topAnchor.constraint(equalTo: firstStackView.bottomAnchor, constant: 16).isActive = true
+        thirdStackView.topAnchor.constraint(equalTo: secondStackView.bottomAnchor, constant: 16).isActive = true
+        fourthStackView.topAnchor.constraint(equalTo: thirdStackView.bottomAnchor, constant: 16).isActive = true
+        fifthStackView.topAnchor.constraint(equalTo: fourthStackView.bottomAnchor, constant: 16).isActive = true
+        fifthStackView.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -40).isActive = true
+    }
+}
+
+extension CalculatorViewController {
+    
+    private func setupLabel() {
+        self.label = UILabel()
+        self.label.textColor = .white
+        self.label.font = .systemFont(ofSize: 92, weight: .light)
+        self.label.text = "0"
+        self.label.textAlignment = .right
+        view.addSubview(self.label)
+        
+        let margins = view.layoutMarginsGuide
         label.translatesAutoresizingMaskIntoConstraints = false
         label.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
         label.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-        
-        let zero = CalculatorButton(name: "0", case: .operand)
-        let one = CalculatorButton(name: "1", case: .operand)
-        let two = CalculatorButton(name: "2", case: .operand)
-        let three = CalculatorButton(name: "3", case: .operand)
-        let four = CalculatorButton(name: "4", case: .operand)
-        let five = CalculatorButton(name: "5", case: .operand)
-        let six = CalculatorButton(name: "6", case: .operand)
-        let seven = CalculatorButton(name: "7", case: .operand)
-        let eight = CalculatorButton(name: "8", case: .operand)
-        let nine = CalculatorButton(name: "9", case: .operand)
-        let dot = CalculatorButton(name: ".", case: .operand)
-        let multiplier = CalculatorButton(systemName: "xmark", case: .basicOperator)
-        let minus = CalculatorButton(systemName: "minus", case: .basicOperator)
-        let plus = CalculatorButton(systemName: "plus", case: .basicOperator)
-        let divider = CalculatorButton(systemName: "divide", case: .basicOperator)
-        let equal = CalculatorButton(systemName: "equal", case: .basicOperator)
-        let ac = CalculatorButton(name: "AC", case: .etc)
-        let change = CalculatorButton(systemName: "plus.forwardslash.minus", case: .etc)
-        let percent = CalculatorButton(systemName: "percent", case: .etc)
-        
-        let firstStack = UIStackView(arrangedSubviews: [ac, change, percent, divider])
-        let secondStack = UIStackView(arrangedSubviews: [seven, eight, nine, multiplier])
-        let thirdStack = UIStackView(arrangedSubviews: [four, five, six, minus])
-        let fourthStack = UIStackView(arrangedSubviews: [one, two, three, plus])
-        let fifthInnetStack = UIStackView(arrangedSubviews: [dot, equal])
-        fifthInnetStack.spacing = 16
-        let fifthStack = UIStackView(arrangedSubviews: [zero, fifthInnetStack])
-        
-        let stacks = [firstStack, secondStack, thirdStack, fourthStack, fifthStack]
-        
-        for stack in stacks {
-            view.addSubview(stack)
-            setStack(to: stack)
-        }
-        
-        firstStack.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
-        secondStack.topAnchor.constraint(equalTo: firstStack.bottomAnchor, constant: 16).isActive = true
-        thirdStack.topAnchor.constraint(equalTo: secondStack.bottomAnchor, constant: 16).isActive = true
-        fourthStack.topAnchor.constraint(equalTo: thirdStack.bottomAnchor, constant: 16).isActive = true
-        fifthStack.topAnchor.constraint(equalTo: fourthStack.bottomAnchor, constant: 16).isActive = true
-        fifthStack.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -40).isActive = true
-        
-        func setStack(to stack: UIStackView) {
-            stack.spacing = 16
-            stack.axis = .horizontal
-            stack.translatesAutoresizingMaskIntoConstraints = false
-            stack.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-            stack.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
-        }
-        
-        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func setupButtons() {
+        
+        zero = CalculatorButton(name: "0", type: .number)
+        one = CalculatorButton(name: "1", type: .number)
+        two = CalculatorButton(name: "2", type: .number)
+        three = CalculatorButton(name: "3", type: .number)
+        four = CalculatorButton(name: "4", type: .number)
+        five = CalculatorButton(name: "5", type: .number)
+        six = CalculatorButton(name: "6", type: .number)
+        seven = CalculatorButton(name: "7", type: .number)
+        eight = CalculatorButton(name: "8", type: .number)
+        nine = CalculatorButton(name: "9", type: .number)
+        dot = CalculatorButton(name: ".", type: .number)
+        
+        multiplier = CalculatorButton(systemName: "xmark", type: .basicOperator(type: .multiply))
+        minus = CalculatorButton(systemName: "minus", type: .basicOperator(type: .minus))
+        plus = CalculatorButton(systemName: "plus", type: .basicOperator(type: .plus))
+        divider = CalculatorButton(systemName: "divide", type: .basicOperator(type: .divide))
+        equal = CalculatorButton(systemName: "equal", type: .basicOperator(type: .equal))
+        
+        ac = CalculatorButton(name: "AC", type: .etc)
+        change = CalculatorButton(systemName: "plus.forwardslash.minus", type: .etc)
+        percent = CalculatorButton(systemName: "percent", type: .etc)
+        
+        let buttons = [zero, one, two, three, four, five, six, seven, eight, nine, dot, multiplier, minus, plus, divider, equal, ac]
+        for button in buttons {
+            if let button = button {
+                self.view.addSubview(button)
+                button.titleLabel?.font = .systemFont(ofSize: 36, weight: .regular)
+                
+                let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 36)]
+                let attributedTitle = NSAttributedString(string: button.titleLabel?.text ?? "", attributes: attribute)
+                button.setAttributedTitle(attributedTitle, for: .normal)
+                button.addTarget(self, action: #selector(tapButton(_:)), for: .touchUpInside)
+            }
+        }
     }
-    */
-
+    
+    private func setStackView(to stackView: UIStackView) {
+        let margins = view.layoutMarginsGuide
+        stackView.spacing = 16
+        stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+    }
+    
+    @objc func tapButton(_ sender: UIButton) {
+        guard let calculatorButton = sender as? CalculatorButton else { return }
+        guard let right = sender.title(for: .normal), let left = self.label.text else {return}
+        switch calculatorButton.calculatorType {
+        case .number:
+            tapNumberButton(left, right)
+        case .basicOperator(let type):
+            tapOperatorButton(right, type: type)
+        case .etc:
+            tapACButton()
+        default:
+            tapACButton()
+        }
+    }
+    
+    private func tapNumberButton(_ left: String , _ right: String) {
+        if left == "0" {
+            self.label.text = right
+        } else {
+            self.label.text = left + right
+        }
+    }
+    
+    private func tapOperatorButton(_ value: String, type: OperatorType) {
+        switch type {
+        case .plus:
+            print("미 구현")
+        case .minus:
+            print("미 구현")
+        case .divide:
+            print("미 구현")
+        case .multiply:
+            print("미 구현")
+        case .equal:
+            print("미 구현")
+        }
+    }
+    
+    private func tapACButton() {
+        self.label.text = "0"
+    }
 }

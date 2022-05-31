@@ -7,14 +7,24 @@
 
 import UIKit
 
-enum CalculatorCase: String {
-    case operand
-    case basicOperator
+enum CalculatorType {
+    case number
+    case basicOperator(type: OperatorType)
     case etc
     case scientific
 }
 
+enum OperatorType: String {
+    case plus
+    case minus
+    case divide
+    case multiply
+    case equal
+}
+
 class CalculatorButton: UIButton {
+    
+    var calculatorType: CalculatorType!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,33 +34,35 @@ class CalculatorButton: UIButton {
         super.init(coder: coder)
     }
     
-    init(name: String, case calculatorCase: CalculatorCase) {
+    init(name: String, type calculatorType: CalculatorType) {
         super.init(frame: .zero)
+        self.calculatorType = calculatorType
         self.setTitle(name, for: .normal)
-        self.setButton(button: self, case: calculatorCase)
+        self.setButton(button: self, type: calculatorType)
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         if name == "0" {
             self.contentHorizontalAlignment = .leading
         } else {
             self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1).isActive = true
         }
-        self.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
     }
     
-    init(systemName: String, case calculatorCase: CalculatorCase) {
+    init(systemName: String, type calculatorType: CalculatorType) {
         super.init(frame: .zero)
+        self.calculatorType = calculatorType
         let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
         self.setImage(UIImage(systemName: systemName, withConfiguration: config), for: .normal)
-        self.setButton(button: self, case: calculatorCase)
+        self.setButton(button: self, type: calculatorType)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1).isActive = true
     }
     
-    private func setButton(button: UIButton, case calculatorCase: CalculatorCase) {
+    private func setButton(button: UIButton, type calculatorType: CalculatorType) {
         var config = UIButton.Configuration.filled()
         config.cornerStyle = .capsule
-        switch calculatorCase {
-        case .operand:
+        switch calculatorType {
+        case .number:
             config.baseBackgroundColor = .darkGray
             self.setTitleColor(.white, for: .normal)
         case .basicOperator:
